@@ -1,30 +1,46 @@
-@if (extrato) {
-<div>
-  <div>{{ extrato.evento.nome }}</div>
-  <div>Evento</div>
+<div class="flex w-full flex-col items-center py-10">
+  @if (extrato) {
+    <div class="text-[26px] font-bold text-[#09bbf7]">
+      Recargas, Compras e Transferências
+    </div>
+    <div class="-mt-0.5 mb-3 flex flex-col items-center">
+      <div class="text-[#09bbf7]">{{ extrato.evento.nome }}</div>
+    </div>
+    <div class="flex flex-col gap-3">
+      @for (item of extrato.historico; track $index) {
+        <div class="flex w-full items-center justify-between gap-10">
+          <div>
+            <div class="text-[22px] font-bold text-[#09bbf7]">
+              {{ item.descricao }}
+            </div>
+            <div class="text-[14px] text-white">
+              {{ item.data | date: "dd/MM/yyyy HH:mm" }}
+            </div>
+          </div>
+          <div class="text-right">
+            @if (item.dataCancelamento) {
+              <div class="-mb-2 text-[12px] text-[#fd0002]">Cancelado</div>
+            }
+            <div
+              class="text-[28px] font-bold"
+              [ngClass]="{
+                'text-white': !item.dataCancelamento,
+                'text-[#fd0002]': item.dataCancelamento,
+              }"
+            >
+              {{ item.valor | currency: "BRL" }}
+            </div>
+            @if (item.dataCancelamento) {
+              <div class="-mt-1 text-[12px] text-[#fd0002]">
+                em
+                {{ item.dataCancelamento | date: "dd/MM/yyyy HH:mm" }}
+              </div>
+            }
+          </div>
+        </div>
+      }
+    </div>
+  } @else {
+    <div class="flex w-full justify-center">Cartão não encontrado</div>
+  }
 </div>
-<div>
-  <div>{{ extrato.saldo | currency : 'BRL' }}</div>
-  <div>Saldo</div>
-</div>
-<table>
-  <thead>
-    <tr>
-      <th>Data</th>
-      <th>Descrição</th>
-      <th>Valor</th>
-    </tr>
-  </thead>
-  <tbody>
-    @for (item of extrato.historico; track item.id) {
-    <tr>
-      <td>{{ item.data | date : 'dd/MM/yyyy HH:mm' }}</td>
-      <td>{{ item.descricao }}</td>
-      <td>{{ item.valor | currency : 'BRL' }}</td>
-    </tr>
-    }
-  </tbody>
-</table>
-} @else {
-<div>Cartão não encontrado</div>
-}
