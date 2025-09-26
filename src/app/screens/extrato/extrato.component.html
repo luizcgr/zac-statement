@@ -11,7 +11,11 @@
         <div class="flex w-full items-center justify-between gap-10">
           <div>
             <div class="text-[22px] font-bold text-[#09bbf7]">
-              {{ item.descricao }}
+              @if (item.tipo === "RECARGA") {
+                Estornado
+              } @else {
+                {{ item.descricao }}
+              }
             </div>
             <div class="text-[14px] text-white">
               {{ item.data | date: "dd/MM/yyyy HH:mm" }}
