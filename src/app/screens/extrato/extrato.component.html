@@ -1,0 +1,30 @@
+@if (extrato) {
+<div>
+  <div>{{ extrato.evento.nome }}</div>
+  <div>Evento</div>
+</div>
+<div>
+  <div>{{ extrato.saldo | currency : 'BRL' }}</div>
+  <div>Saldo</div>
+</div>
+<table>
+  <thead>
+    <tr>
+      <th>Data</th>
+      <th>Descrição</th>
+      <th>Valor</th>
+    </tr>
+  </thead>
+  <tbody>
+    @for (item of extrato.historico; track item.id) {
+    <tr>
+      <td>{{ item.data | date : 'dd/MM/yyyy HH:mm' }}</td>
+      <td>{{ item.descricao }}</td>
+      <td>{{ item.valor | currency : 'BRL' }}</td>
+    </tr>
+    }
+  </tbody>
+</table>
+} @else {
+<div>Cartão não encontrado</div>
+}

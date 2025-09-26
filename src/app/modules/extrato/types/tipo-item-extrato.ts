@@ -1,0 +1,7 @@
+export type TipoItemExtrato =
+  | 'COMPRA'
+  | 'RECARGA'
+  | 'TRANSFERENCIA_ENVIADA'
+  | 'TRANSFERENCIA_RECEBIDA'
+  | 'COMPRA_VARIAVEL'
+  | 'DEVOLUCAO';
