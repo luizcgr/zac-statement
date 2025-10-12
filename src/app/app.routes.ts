@@ -1,15 +1,14 @@
 import { Routes } from '@angular/router';
-import { extratoResolver } from './modules/extrato/resolvers/extrato.resolver';
+import { ExtratoComponent } from './screens/extrato/extrato.component';
+import { HomeComponent } from './screens/home/home.component';
 
 export const routes: Routes = [
   {
-    path: 'cartoes/:cartao',
-    loadComponent: () =>
-      import('./screens/extrato/extrato.component').then(
-        (m) => m.ExtratoComponent,
-      ),
-    resolve: {
-      extrato: extratoResolver,
-    },
+    path: '',
+    component: HomeComponent,
+  },
+  {
+    path: 'cartoes/:codigo',
+    component: ExtratoComponent,
   },
 ];
