@@ -1,59 +1,105 @@
 # ZacStatement
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 20.3.2.
+Projeto para consulta de extratos pelos próprios clientes.
 
-## Development server
+# Configuração do serviço no servidor.
 
-To start a local development server, run:
+## Configuração do DNS
 
-```bash
-ng serve
+Aponte o dns extrato.zac.app.br para o endereço onde o serviço será executado.
+
+## Configuração do certificado
+
+Crie o arquivo /etc/nginx/sites-available/extrato.zac.app.br.
+
+```shell
+server {
+	server_name extrato.zac.app.br;       # dns apontando para o ip do servidor.
+
+	location / {
+		proxy_pass http://localhost:4000/;  # upstream.
+		proxy_connect_timeout 5s;           # tempo máximo para tentar conectar antes de retornar um erro
+	}
+}
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+Crie um link simbólico no diretŕio /etc/nginx/sites-enabled.
 
-## Code scaffolding
+Crie o certificado.
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
-
-```bash
-ng generate component component-name
+```sh
+certbot --nginx -d extrato.zac.app.br
 ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+Caso o app não consiga finalizar toda a configuração, ajuste o arquivo para ficar da seguinte maneira.
 
-```bash
-ng generate --help
+```sh
+server {
+	server_name extrato.zac.app.br;    # dns apontando para o ip do servidor.
+
+	location / {
+		proxy_pass http://localhost:4000/;  # upstream.
+		proxy_connect_timeout 5s;    # tempo máximo para tentar conectar antes de retornar um erro
+	}
+
+	listen 443 ssl; # managed by Certbot
+        ssl_certificate /etc/letsencrypt/live/extrato.zac.app.br/fullchain.pem; # managed by Certbot
+        ssl_certificate_key /etc/letsencrypt/live/extrato.zac.app.br/privkey.pem; # managed by Certbot
+        include /etc/letsencrypt/options-ssl-nginx.conf; # managed by Certbot
+        ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem; # managed by Certbot
+}
+
+server {
+    if ($host = extrato.zac.app.br) {
+        return 301 https://$host$request_uri;
+    } # managed by Certbot
+
+
+    server_name extrato.zac.app.br;
+    listen 80;
+    return 404; # managed by Certbot
+}
 ```
 
-## Building
+## Aplicação como seriço do Linux
 
-To build the project run:
+Utilize o usuário root para fazer estas configurações.
 
-```bash
-ng build
+A aplicação foi configurada no Ubuntu 24.
+
+Crie o arquivo /etc/systemd/system/zac-statement.service.
+
+```sh
+[Unit]
+Description=Angular SSR - Zac Statement
+After=network.target
+
+[Service]
+Type=simple
+User=zacapi
+WorkingDirectory=/home/zacapi/git/zac-statement
+ExecStart=/bin/bash -lc 'export PATH=$PATH:/home/zacapi/.nvm/versions/node/v22.18.0/bin && cd /home/zacapi/git/zac-statement && yarn serve:ssr:zac-statement'
+Restart=always
+RestartSec=10
+StandardOutput=file:/home/zacapi/zac-statement.log
+StandardError=file:/home/zacapi/zac-statement-error.log
+
+
+[Install]
+WantedBy=multi-user.target
 ```
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+Faça os ajustes necessário para indicar os caminhos corretos dos arquivos.
 
-## Running unit tests
+Depois de criar os arquivos execute os comandos.
 
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
-
-```bash
-ng test
+```sh
+# Recarregar o systemd para reconhecer o novo serviço
+systemctl daemon-reload
+# Ativar para iniciar no boot
+systemctl enable zac-statement
+# Iniciar agora
+systemctl start zac-statement
+# Verificar status
+systemctl status zac-statement
 ```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
