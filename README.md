@@ -61,45 +61,24 @@ server {
 }
 ```
 
-## Aplicação como seriço do Linux
+## Iniciar com pm2
 
-Utilize o usuário root para fazer estas configurações.
-
-A aplicação foi configurada no Ubuntu 24.
-
-Crie o arquivo /etc/systemd/system/zac-statement.service.
+Dentro do diretório da aplicação, execute o comando a seguir.
 
 ```sh
-[Unit]
-Description=Angular SSR - Zac Statement
-After=network.target
-
-[Service]
-Type=simple
-User=zacapi
-WorkingDirectory=/home/zacapi/git/zac-statement
-ExecStart=/bin/bash -lc 'export PATH=$PATH:/home/zacapi/.nvm/versions/node/v22.18.0/bin && cd /home/zacapi/git/zac-statement && yarn serve:ssr:zac-statement'
-Restart=always
-RestartSec=10
-StandardOutput=file:/home/zacapi/zac-statement.log
-StandardError=file:/home/zacapi/zac-statement-error.log
-
-
-[Install]
-WantedBy=multi-user.target
+pm2 start
 ```
-
-Faça os ajustes necessário para indicar os caminhos corretos dos arquivos.
-
-Depois de criar os arquivos execute os comandos.
 
 ```sh
-# Recarregar o systemd para reconhecer o novo serviço
-systemctl daemon-reload
-# Ativar para iniciar no boot
-systemctl enable zac-statement
-# Iniciar agora
-systemctl start zac-statement
-# Verificar status
-systemctl status zac-statement
+pm2 save
 ```
+
+Caso a aplicação zacapi ainda não esteja configuração, execute o comando para forçar o reinício da aplicação quando a máquina for restartada. Caso contrário não é necessário configurar o startup.
+
+```sh
+pm2 startup
+```
+
+A documentação a seguir foi utilizada para ajustar a aplicação para rodar em conjunto com o pm2.
+
+[https://github.com/Unitech/pm2/issues/5921](https://github.com/Unitech/pm2/issues/5921)
