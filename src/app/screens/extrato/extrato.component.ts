@@ -1,6 +1,5 @@
 import {
   CommonModule,
-  CurrencyPipe,
   DatePipe,
   isPlatformBrowser,
   isPlatformServer,
@@ -14,14 +13,15 @@ import {
   TransferState,
 } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Extrato } from '../../modules/extrato/types/extrato';
 import { ExtratoService } from '../../modules/extrato/services/extrato.service';
+import { Extrato } from '../../modules/extrato/types/extrato';
+import { MoneyPipe } from '../../pipes/money.pipe';
 
 const EXTRATO_KEY = makeStateKey<Extrato>('extrato');
 
 @Component({
   selector: 'extrato',
-  imports: [CommonModule, CurrencyPipe, DatePipe],
+  imports: [CommonModule, MoneyPipe, DatePipe],
   templateUrl: `./extrato.component.html`,
 })
 export class ExtratoComponent implements OnInit {

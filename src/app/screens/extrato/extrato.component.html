@@ -12,7 +12,7 @@
 
     <div class="mb-2 text-center">
       <div class="text-[36px] font-bold text-white">
-        {{ extrato.saldo | currency: "BRL" }}
+        {{ extrato.saldo | money }}
       </div>
       <div class="-mt-2 text-[#09bbf7]">Saldo Atual</div>
     </div>
@@ -44,7 +44,7 @@
                 'text-[#fd0002] line-through': item.dataCancelamento,
               }"
             >
-              {{ item.valor | currency: "BRL" }}
+              {{ item.valor | money }}
             </div>
             @if (item.dataCancelamento) {
               <div class="-mt-1 text-[12px] text-[#fd0002]">
