@@ -33,21 +33,50 @@ certbot --nginx -d extrato.zac.app.br
 
 Caso o app não consiga finalizar toda a configuração, ajuste o arquivo para ficar da seguinte maneira.
 
+Altere a configuração /etc/nginx/nginx.conf para criar uma nova área de memória. Inclua o conteúdo antes do primeiro include.
+
+```sh
+limit_req_zone $binary_remote_addr zone=extrato_limit:10m rate=100r/m;
+```
+
 ```sh
 server {
-	server_name extrato.zac.app.br;    # dns apontando para o ip do servidor.
+        server_name extrato.zac.app.br;    # dns apontando para o ip do servidor.
 
-	location / {
-		proxy_pass http://localhost:4000/;  # upstream.
-		proxy_connect_timeout 5s;    # tempo máximo para tentar conectar antes de retornar um erro
-	}
+        # --- Cabeçalhos de segurança (OWASP) ---
+        add_header X-Frame-Options "SAMEORIGIN" always;
+        add_header X-Content-Type-Options "nosniff" always;
+        add_header X-XSS-Protection "1; mode=block" always;
+        add_header Referrer-Policy "strict-origin-when-cross-origin" always;
+        add_header Permissions-Policy "geolocation=(), microphone=(), camera=()" always;
+        add_header Strict-Transport-Security "max-age=31536000; includeSubDomains; preload" always;
 
-	listen 443 ssl; # managed by Certbot
+        # --- Proteção contra bots e força bruta ---
+        limit_req zone=extrato_limit burst=10 nodelay;
+
+        # --- Timeout e limites ---
+        client_max_body_size 10M;
+        client_body_timeout 10s;
+        proxy_connect_timeout 5s;
+        keepalive_timeout 15s;
+
+        location / {
+                proxy_pass http://localhost:4000/;  # upstream.
+                proxy_connect_timeout 5s;    # tempo máximo para tentar conectar antes de retornar um erro
+        }
+
+        # --- Bloqueia scanners e crawlers agressivos ---
+        if ($http_user_agent ~* (sqlmap|nikto|fimap|dirbuster|nmap|nessus|wpscan|curl|wget)) {
+                return 403;
+        }
+
+        listen 443 ssl; # managed by Certbot
         ssl_certificate /etc/letsencrypt/live/extrato.zac.app.br/fullchain.pem; # managed by Certbot
         ssl_certificate_key /etc/letsencrypt/live/extrato.zac.app.br/privkey.pem; # managed by Certbot
         include /etc/letsencrypt/options-ssl-nginx.conf; # managed by Certbot
         ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem; # managed by Certbot
 }
+
 
 server {
     if ($host = extrato.zac.app.br) {
