@@ -63,8 +63,12 @@
           </button>
 
           <!-- Products List -->
-          @if (isExpanded(item.terminal)) {
-            <div class="border-t-2 border-[#09bbf7]/30">
+          <div
+            class="grid border-t-2 border-[#09bbf7]/30 transition-all duration-300 ease-in-out"
+            [class.grid-rows-[1fr]]="isExpanded(item.terminal)"
+            [class.grid-rows-[0fr]]="!isExpanded(item.terminal)"
+          >
+            <div class="overflow-hidden">
               @for (produto of item.produtos; track $index) {
                 <div
                   class="flex items-center justify-between gap-4 border-b border-gray-700/50 p-4 last:border-0"
@@ -84,7 +88,7 @@
                 </div>
               }
             </div>
-          }
+          </div>
         </div>
       }
     </div>
