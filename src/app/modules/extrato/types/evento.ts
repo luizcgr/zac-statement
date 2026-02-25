@@ -7,4 +7,5 @@ export type Evento = {
   modoDebito: boolean;
   pausado?: boolean;
   urlCardapio?: string;
+  chave: string;
 };

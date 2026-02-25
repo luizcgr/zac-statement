@@ -3,7 +3,7 @@ import {
   DatePipe,
   isPlatformBrowser,
   isPlatformServer,
-} from '@angular/common';
+} from "@angular/common";
 import {
   Component,
   Inject,
@@ -11,16 +11,16 @@ import {
   OnInit,
   PLATFORM_ID,
   TransferState,
-} from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { ExtratoService } from '../../modules/extrato/services/extrato.service';
-import { Extrato } from '../../modules/extrato/types/extrato';
-import { MoneyPipe } from '../../pipes/money.pipe';
+} from "@angular/core";
+import { ActivatedRoute } from "@angular/router";
+import { ExtratoService } from "../../modules/extrato/services/extrato.service";
+import { Extrato } from "../../modules/extrato/types/extrato";
+import { MoneyPipe } from "../../pipes/money.pipe";
 
-const EXTRATO_KEY = makeStateKey<Extrato>('extrato');
+const EXTRATO_KEY = makeStateKey<Extrato>("extrato");
 
 @Component({
-  selector: 'extrato',
+  selector: "extrato",
   imports: [CommonModule, MoneyPipe, DatePipe],
   templateUrl: `./extrato.component.html`,
 })
@@ -36,9 +36,10 @@ export class ExtratoComponent implements OnInit {
 
   ngOnInit(): void {
     if (isPlatformServer(this._platformId)) {
-      const codigo = this._activatedRoute.snapshot.paramMap.get('codigo');
+      const codigo = this._activatedRoute.snapshot.paramMap.get("codigo");
       this._extratoService.consultar(codigo!).subscribe((data) => {
         this.extrato = data;
+        console.log(data);
         this._transferState.set(EXTRATO_KEY, data);
       });
     }

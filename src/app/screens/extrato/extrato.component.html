@@ -16,6 +16,14 @@
       </div>
       <div class="-mt-2 text-[#09bbf7]">Saldo Atual</div>
     </div>
+
+    <a
+      [href]="'/cardapios/' + extrato.evento.chave"
+      class="mb-4 rounded-lg border-2 border-[#09bbf7] bg-[#09bbf7] px-6 py-3 text-center text-[18px] font-bold text-white transition-colors hover:bg-[#09bbf7]/80"
+    >
+      Ver Cardápio do Evento
+    </a>
+
     <div class="flex flex-col gap-3">
       @for (item of extrato.historico; track $index) {
         <div class="flex w-full items-center justify-between gap-10">
