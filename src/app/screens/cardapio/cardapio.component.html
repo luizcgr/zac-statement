@@ -25,12 +25,23 @@
     <div class="w-full max-w-2xl space-y-6">
       @for (item of itensFiltrados(); track item.terminal) {
         <div
-          class="overflow-hidden rounded-lg border-2 border-[#09bbf7] bg-gray-900/50"
+          [class.border-[#0788c7]]="terminalTemProdutosSelecionados(item.produtos)"
+          [class.border-[#09bbf7]]="!terminalTemProdutosSelecionados(item.produtos)"
+          [class.bg-[#0788c7]/20]="terminalTemProdutosSelecionados(item.produtos)"
+          [class.bg-gray-900/50]="!terminalTemProdutosSelecionados(item.produtos)"
+          class="overflow-hidden rounded-lg border-2"
         >
           <!-- Terminal Header -->
-          <div class="bg-[#09bbf7] px-4 py-3">
+          <div
+            [class.bg-[#0788c7]]="terminalTemProdutosSelecionados(item.produtos)"
+            [class.bg-[#09bbf7]]="!terminalTemProdutosSelecionados(item.produtos)"
+            class="px-4 py-3"
+          >
             <div class="text-[20px] font-bold text-white">
               {{ item.terminal }}
+              @if (terminalTemProdutosSelecionados(item.produtos)) {
+                <span class="ml-2 text-[16px]">✓</span>
+              }
             </div>
           </div>
 
@@ -42,11 +53,35 @@
                   <div class="text-[18px] font-medium text-white">
                     {{ produto.nome }}
                   </div>
-                </div>
-                <div class="flex-shrink-0">
-                  <div class="text-[18px] font-bold text-white">
+                  <div class="mt-1 text-[16px] text-gray-400">
                     {{ produto.valor | money }}
                   </div>
+                </div>
+                <div class="flex items-center gap-3">
+                  <!-- Remove Button -->
+                  <button
+                    (click)="removerProduto(produto.nome)"
+                    [class.opacity-50]="obterQuantidade(produto.nome) === 0"
+                    [disabled]="obterQuantidade(produto.nome) === 0"
+                    class="flex h-10 w-10 items-center justify-center rounded-full bg-red-600 text-[24px] leading-none font-bold text-white hover:bg-red-700 disabled:cursor-not-allowed disabled:hover:bg-red-600"
+                  >
+                    -
+                  </button>
+
+                  <!-- Quantity Display -->
+                  <div
+                    class="w-12 text-center text-[20px] font-bold text-white"
+                  >
+                    {{ obterQuantidade(produto.nome) }}
+                  </div>
+
+                  <!-- Add Button -->
+                  <button
+                    (click)="adicionarProduto(produto.nome)"
+                    class="flex h-10 w-10 items-center justify-center rounded-full bg-green-600 text-[24px] leading-none font-bold text-white hover:bg-green-700"
+                  >
+                    +
+                  </button>
                 </div>
               </div>
             }
@@ -54,9 +89,28 @@
         </div>
       }
     </div>
+
+    <!-- Spacer to prevent content from being hidden behind fixed total -->
+    @if (valorTotal() > 0) {
+      <div class="h-32"></div>
+    }
   } @else {
     <div class="mt-10 text-center text-[20px] text-white">
       Cardápio não disponível
     </div>
   }
 </div>
+
+<!-- Fixed Total Value Display -->
+@if (cardapio() && valorTotal() > 0) {
+  <div
+    class="fixed right-0 bottom-0 left-0 z-50 flex justify-center border-t-2 border-[#0788c7] bg-gray-900 p-4 shadow-lg"
+  >
+    <div class="flex w-full max-w-2xl items-center justify-between">
+      <div class="text-[24px] font-bold text-white">Total</div>
+      <div class="text-[28px] font-bold text-[#09bbf7]">
+        {{ valorTotal() | money }}
+      </div>
+    </div>
+  </div>
+}

@@ -20,10 +20,12 @@ const CARDAPIO_KEY = makeStateKey<Cardapio>("cardapio");
   selector: "pagina-cardapio",
   imports: [MoneyPipe],
   templateUrl: "./cardapio.component.html",
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CardapioComponent {
   cardapio = signal<Cardapio | null>(null);
   filtro = signal<string>("");
+  quantidades = signal<Map<string, number>>(new Map());
 
   itensFiltrados = computed(() => {
     const cardapioData = this.cardapio();
@@ -42,6 +44,50 @@ export class CardapioComponent {
       }))
       .filter((item) => item.produtos.length > 0);
   });
+
+  valorTotal = computed(() => {
+    const cardapioData = this.cardapio();
+    const qtds = this.quantidades();
+
+    if (!cardapioData) return 0;
+
+    let total = 0;
+    cardapioData.itens.forEach((item) => {
+      item.produtos.forEach((produto) => {
+        const quantidade = qtds.get(produto.nome) || 0;
+        total += produto.valor * quantidade;
+      });
+    });
+
+    return total;
+  });
+
+  adicionarProduto(nomeProduto: string): void {
+    const qtds = new Map(this.quantidades());
+    qtds.set(nomeProduto, (qtds.get(nomeProduto) || 0) + 1);
+    this.quantidades.set(qtds);
+  }
+
+  removerProduto(nomeProduto: string): void {
+    const qtds = new Map(this.quantidades());
+    const quantidadeAtual = qtds.get(nomeProduto) || 0;
+
+    if (quantidadeAtual > 0) {
+      qtds.set(nomeProduto, quantidadeAtual - 1);
+      this.quantidades.set(qtds);
+    }
+  }
+
+  obterQuantidade(nomeProduto: string): number {
+    return this.quantidades().get(nomeProduto) || 0;
+  }
+
+  terminalTemProdutosSelecionados(
+    produtos: { nome: string; valor: number }[],
+  ): boolean {
+    const qtds = this.quantidades();
+    return produtos.some((produto) => (qtds.get(produto.nome) || 0) > 0);
+  }
 
   constructor(
     private readonly _cardapioService: CardapioService,
