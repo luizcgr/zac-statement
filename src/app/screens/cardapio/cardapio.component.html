@@ -1,0 +1,96 @@
+<div class="flex w-full place-content-center">
+  <img src="logo-zac.png" alt="Logo Zac" width="200" class="-mb-5" />
+</div>
+
+<div class="flex w-full flex-col items-center px-4">
+  @if (cardapio()) {
+    <div class="text-center text-[26px] font-bold text-[#09bbf7]">Cardápio</div>
+    <div class="-mt-0.5 mb-6 text-center">
+      <div class="text-[18px] text-[#09bbf7]">{{ cardapio()!.evento }}</div>
+    </div>
+
+    <div class="w-full max-w-2xl space-y-3">
+      @for (item of cardapio()!.itens; track item.terminal) {
+        <div
+          class="overflow-hidden rounded-lg border-2 border-[#09bbf7] bg-gray-900/50"
+        >
+          <!-- Terminal Header -->
+          <button
+            (click)="toggleTerminal(item.terminal)"
+            class="flex w-full items-center justify-between p-4 text-left transition-colors hover:bg-gray-800/50"
+          >
+            <div class="flex items-center gap-3">
+              <div
+                class="flex h-12 w-12 items-center justify-center rounded-full bg-[#09bbf7]"
+              >
+                <svg
+                  class="h-6 w-6 text-white"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"
+                  />
+                </svg>
+              </div>
+              <div>
+                <div class="text-[20px] font-bold text-white">
+                  {{ item.terminal }}
+                </div>
+                <div class="text-[14px] text-[#09bbf7]">
+                  {{ item.produtos.length }} produtos
+                </div>
+              </div>
+            </div>
+            <svg
+              class="h-6 w-6 text-[#09bbf7] transition-transform"
+              [class.rotate-180]="isExpanded(item.terminal)"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M19 9l-7 7-7-7"
+              />
+            </svg>
+          </button>
+
+          <!-- Products List -->
+          @if (isExpanded(item.terminal)) {
+            <div class="border-t-2 border-[#09bbf7]/30">
+              @for (produto of item.produtos; track $index) {
+                <div
+                  class="flex items-center justify-between gap-4 border-b border-gray-700/50 p-4 last:border-0"
+                >
+                  <div class="flex-1">
+                    <div class="text-[18px] font-medium text-white">
+                      {{ produto.nome }}
+                    </div>
+                  </div>
+                  <div class="flex-shrink-0">
+                    <div
+                      class="rounded-full bg-[#09bbf7] px-4 py-2 text-[18px] font-bold text-white"
+                    >
+                      {{ produto.valor | money }}
+                    </div>
+                  </div>
+                </div>
+              }
+            </div>
+          }
+        </div>
+      }
+    </div>
+  } @else {
+    <div class="mt-10 text-center text-[20px] text-white">
+      Cardápio não disponível
+    </div>
+  }
+</div>

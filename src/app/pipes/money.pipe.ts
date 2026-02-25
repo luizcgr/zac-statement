@@ -1,7 +1,10 @@
-import { Pipe, PipeTransform } from '@angular/core';
-import { money } from '../utils/formatters';
+import { Pipe, PipeTransform } from "@angular/core";
+import { money } from "../utils/formatters";
 
-@Pipe({ name: 'money' })
+@Pipe({
+  name: "money",
+  standalone: true,
+})
 export class MoneyPipe implements PipeTransform {
   transform(value: number): string {
     return money(value);

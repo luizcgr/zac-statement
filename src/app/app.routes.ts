@@ -1,14 +1,19 @@
-import { Routes } from '@angular/router';
-import { ExtratoComponent } from './screens/extrato/extrato.component';
-import { HomeComponent } from './screens/home/home.component';
+import { Routes } from "@angular/router";
+import { CardapioComponent } from "./screens/cardapio/cardapio.component";
+import { ExtratoComponent } from "./screens/extrato/extrato.component";
+import { HomeComponent } from "./screens/home/home.component";
 
 export const routes: Routes = [
   {
-    path: '',
+    path: "",
     component: HomeComponent,
   },
   {
-    path: 'cartoes/:codigo',
+    path: "cartoes/:codigo",
     component: ExtratoComponent,
+  },
+  {
+    path: "cartoes/:codigo/cardapio",
+    component: CardapioComponent,
   },
 ];
