@@ -9,11 +9,9 @@ import {
   signal,
   TransferState,
 } from "@angular/core";
+import { ActivatedRoute } from "@angular/router";
 import { CardapioService } from "../../modules/cardapio/services/cardapio.service";
 import { Cardapio } from "../../modules/cardapio/types/cardapio";
-import { ActivatedRoute } from "@angular/router";
-import { ExtratoService } from "../../modules/extrato/services/extrato.service";
-import { concatMap, defer, iif, tap } from "rxjs";
 import { MoneyPipe } from "../../pipes/money.pipe";
 
 const CARDAPIO_KEY = makeStateKey<Cardapio>("cardapio");
@@ -55,14 +53,12 @@ export class CardapioComponent {
 
   ngOnInit(): void {
     if (isPlatformServer(this._platformId)) {
-      const eventoId = this._activatedRoute.snapshot.paramMap.get("eventoId");
-      if (eventoId && /\d+/.test(eventoId)) {
-        this._cardapioService
-          .consultar(Number(eventoId))
-          .subscribe((cardapio) => {
-            this.cardapio.set(cardapio);
-            this._transferState.set(CARDAPIO_KEY, cardapio);
-          });
+      const chave = this._activatedRoute.snapshot.paramMap.get("chave");
+      if (chave) {
+        this._cardapioService.consultar(chave).subscribe((cardapio) => {
+          this.cardapio.set(cardapio);
+          this._transferState.set(CARDAPIO_KEY, cardapio);
+        });
       }
     }
     if (isPlatformBrowser(this._platformId)) {

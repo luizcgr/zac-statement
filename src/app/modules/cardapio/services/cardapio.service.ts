@@ -7,7 +7,7 @@ import { Cardapio } from "../types/cardapio";
 export class CardapioService {
   constructor(private readonly _http: HttpClient) {}
 
-  consultar(eventoId: number): Observable<Cardapio> {
-    return this._http.get<Cardapio>(`v1/cardapio/${eventoId}/publico`);
+  consultar(chave: string): Observable<Cardapio> {
+    return this._http.get<Cardapio>(`v1/cardapio/${chave}/publico`);
   }
 }
