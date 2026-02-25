@@ -20,7 +20,6 @@ const CARDAPIO_KEY = makeStateKey<Cardapio>("cardapio");
   selector: "pagina-cardapio",
   imports: [MoneyPipe],
   templateUrl: "./cardapio.component.html",
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CardapioComponent {
   cardapio = signal<Cardapio | null>(null);

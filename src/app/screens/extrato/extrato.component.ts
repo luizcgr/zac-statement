@@ -39,7 +39,6 @@ export class ExtratoComponent implements OnInit {
       const codigo = this._activatedRoute.snapshot.paramMap.get("codigo");
       this._extratoService.consultar(codigo!).subscribe((data) => {
         this.extrato = data;
-        console.log(data);
         this._transferState.set(EXTRATO_KEY, data);
       });
     }

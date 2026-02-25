@@ -1,16 +1,20 @@
-import { RenderMode, ServerRoute } from '@angular/ssr';
+import { RenderMode, ServerRoute } from "@angular/ssr";
 
 export const serverRoutes: ServerRoute[] = [
   {
-    path: '',
+    path: "",
     renderMode: RenderMode.Server,
   },
   {
-    path: 'cartoes/:codigo',
+    path: "cartoes/:codigo",
     renderMode: RenderMode.Server,
   },
   {
-    path: '**',
+    path: "cardapios/:chave",
+    renderMode: RenderMode.Server,
+  },
+  {
+    path: "**",
     renderMode: RenderMode.Prerender,
   },
 ];
