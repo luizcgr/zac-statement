@@ -13,7 +13,7 @@ export const routes: Routes = [
     component: ExtratoComponent,
   },
   {
-    path: "cartoes/:codigo/cardapio",
+    path: "cardapios/:eventoId",
     component: CardapioComponent,
   },
 ];

@@ -8,6 +8,6 @@ export class CardapioService {
   constructor(private readonly _http: HttpClient) {}
 
   consultar(eventoId: number): Observable<Cardapio> {
-    return this._http.get<Cardapio>(`v1/cardapio/${eventoId}`);
+    return this._http.get<Cardapio>(`v1/cardapio/${eventoId}/publico`);
   }
 }
