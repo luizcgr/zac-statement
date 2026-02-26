@@ -63,7 +63,7 @@
                     (click)="removerProduto(produto.nome)"
                     [class.opacity-50]="obterQuantidade(produto.nome) === 0"
                     [disabled]="obterQuantidade(produto.nome) === 0"
-                    class="flex h-10 w-10 items-center justify-center rounded-full bg-red-600 text-[24px] leading-none font-bold text-white hover:bg-red-700 disabled:cursor-not-allowed disabled:hover:bg-red-600"
+                    class="flex h-10 w-10 items-center justify-center rounded-full bg-red-600 text-[24px] leading-none font-bold text-white hover:bg-red-700 disabled:cursor-not-allowed disabled:hover:bg-red-600 touch-manipulation"
                   >
                     -
                   </button>
@@ -78,7 +78,7 @@
                   <!-- Add Button -->
                   <button
                     (click)="adicionarProduto(produto.nome)"
-                    class="flex h-10 w-10 items-center justify-center rounded-full bg-green-600 text-[24px] leading-none font-bold text-white hover:bg-green-700"
+                    class="flex h-10 w-10 items-center justify-center rounded-full bg-green-600 text-[24px] leading-none font-bold text-white hover:bg-green-700 touch-manipulation"
                   >
                     +
                   </button>
