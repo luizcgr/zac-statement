@@ -63,7 +63,7 @@
                     (click)="removerProduto(produto.nome)"
                     [class.opacity-50]="obterQuantidade(produto.nome) === 0"
                     [disabled]="obterQuantidade(produto.nome) === 0"
-                    class="flex h-10 w-10 items-center justify-center rounded-full bg-red-600 text-[24px] leading-none font-bold text-white hover:bg-red-700 disabled:cursor-not-allowed disabled:hover:bg-red-600 touch-manipulation"
+                    class="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-rose-400 to-red-600 text-[24px] leading-none font-bold text-white hover:from-rose-500 hover:to-red-700 disabled:cursor-not-allowed disabled:hover:from-rose-400 disabled:hover:to-red-600 shadow-lg touch-manipulation transition-all"
                   >
                     -
                   </button>
@@ -78,7 +78,7 @@
                   <!-- Add Button -->
                   <button
                     (click)="adicionarProduto(produto.nome)"
-                    class="flex h-10 w-10 items-center justify-center rounded-full bg-green-600 text-[24px] leading-none font-bold text-white hover:bg-green-700 touch-manipulation"
+                    class="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-emerald-400 to-green-600 text-[24px] leading-none font-bold text-white hover:from-emerald-500 hover:to-green-700 shadow-lg touch-manipulation transition-all"
                   >
                     +
                   </button>
