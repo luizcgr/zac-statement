@@ -54,6 +54,13 @@ const CARDAPIO_KEY = makeStateKey<Cardapio>("cardapio");
       .animate-slide-down {
         animation: slideDown 0.2s ease-in forwards;
       }
+
+      button {
+        -webkit-tap-highlight-color: transparent;
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        user-select: none;
+      }
     `,
   ],
 })
