@@ -13,6 +13,7 @@ import {
   TransferState,
 } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
+import { ImagemPatrocinadorComponent } from "../../components/imagem-patrocinador/imagem-patrocinador.component";
 import { ExtratoService } from "../../modules/extrato/services/extrato.service";
 import { Extrato } from "../../modules/extrato/types/extrato";
 import { MoneyPipe } from "../../pipes/money.pipe";
@@ -21,7 +22,7 @@ const EXTRATO_KEY = makeStateKey<Extrato>("extrato");
 
 @Component({
   selector: "extrato",
-  imports: [CommonModule, MoneyPipe, DatePipe],
+  imports: [CommonModule, MoneyPipe, DatePipe, ImagemPatrocinadorComponent],
   templateUrl: `./extrato.component.html`,
 })
 export class ExtratoComponent implements OnInit {

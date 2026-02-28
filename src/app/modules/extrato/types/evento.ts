@@ -1,3 +1,5 @@
+import { Patrocinador } from "./patrocinador";
+
 export type Evento = {
   id: number;
   nome: string;
@@ -8,4 +10,5 @@ export type Evento = {
   pausado?: boolean;
   urlCardapio?: string;
   chave: string;
+  patrocinadores: Patrocinador[];
 };
