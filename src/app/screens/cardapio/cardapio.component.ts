@@ -3,6 +3,7 @@ import {
   ChangeDetectionStrategy,
   Component,
   computed,
+  effect,
   Inject,
   makeStateKey,
   PLATFORM_ID,
@@ -22,11 +23,46 @@ const CARDAPIO_KEY = makeStateKey<Cardapio>("cardapio");
   imports: [MoneyPipe, PatrocinadoresComponent],
   templateUrl: "./cardapio.component.html",
   changeDetection: ChangeDetectionStrategy.OnPush,
+  styles: [
+    `
+      @keyframes slideUp {
+        from {
+          transform: translateY(100%);
+          opacity: 0;
+        }
+        to {
+          transform: translateY(0);
+          opacity: 1;
+        }
+      }
+
+      @keyframes slideDown {
+        from {
+          transform: translateY(0);
+          opacity: 1;
+        }
+        to {
+          transform: translateY(100%);
+          opacity: 0;
+        }
+      }
+
+      .animate-slide-up {
+        animation: slideUp 0.3s ease-out;
+      }
+
+      .animate-slide-down {
+        animation: slideDown 0.2s ease-in forwards;
+      }
+    `,
+  ],
 })
 export class CardapioComponent {
   cardapio = signal<Cardapio | null>(null);
   filtro = signal<string>("");
   quantidades = signal<Map<string, number>>(new Map());
+  mostrarTotal = signal<boolean>(false);
+  animandoSaida = signal<boolean>(false);
 
   itensFiltrados = computed(() => {
     const cardapioData = this.cardapio();
@@ -95,7 +131,24 @@ export class CardapioComponent {
     private readonly _transferState: TransferState,
     @Inject(PLATFORM_ID) private readonly _platformId: object,
     private readonly _activatedRoute: ActivatedRoute,
-  ) {}
+  ) {
+    effect(() => {
+      const total = this.valorTotal();
+
+      if (isPlatformBrowser(this._platformId)) {
+        if (total > 0) {
+          this.mostrarTotal.set(true);
+          this.animandoSaida.set(false);
+        } else if (this.mostrarTotal()) {
+          this.animandoSaida.set(true);
+          setTimeout(() => {
+            this.mostrarTotal.set(false);
+            this.animandoSaida.set(false);
+          }, 200);
+        }
+      }
+    });
+  }
 
   ngOnInit(): void {
     if (isPlatformServer(this._platformId)) {

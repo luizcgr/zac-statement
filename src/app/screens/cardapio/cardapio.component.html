@@ -97,7 +97,7 @@
     }
 
     <!-- Spacer to prevent content from being hidden behind fixed total -->
-    @if (valorTotal() > 0) {
+    @if (mostrarTotal()) {
       <div class="h-32"></div>
     }
   } @else {
@@ -110,8 +110,10 @@
 <div class="mb-20"></div>
 
 <!-- Fixed Total Value Display -->
-@if (cardapio() && valorTotal() > 0) {
+@if (cardapio() && mostrarTotal()) {
   <div
+    [class.animate-slide-up]="!animandoSaida()"
+    [class.animate-slide-down]="animandoSaida()"
     class="fixed right-0 bottom-0 left-0 z-50 flex justify-center border-t-2 border-[#0788c7] bg-gray-900 p-4 shadow-lg"
   >
     <div class="flex w-full max-w-2xl items-center justify-between">
