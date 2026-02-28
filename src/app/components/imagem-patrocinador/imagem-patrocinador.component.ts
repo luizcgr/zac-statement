@@ -1,7 +1,6 @@
-import { NgOptimizedImage } from "@angular/common";
-import { Component, Input, OnInit } from "@angular/core";
-import { Patrocinador } from "../../modules/extrato/types/patrocinador";
+import { Component, Input } from "@angular/core";
 import { Router, RouterModule } from "@angular/router";
+import { Patrocinador } from "../../modules/extrato/types/patrocinador";
 
 @Component({
   selector: "imagem-patrocinador",
@@ -11,7 +10,7 @@ import { Router, RouterModule } from "@angular/router";
       [src]="patrocinador.imagem"
       (click)="abrirLink()"
       alt="Imagem do patrocinador"
-      class="h-auto max-w-sm rounded-lg object-contain"
+      class="h-auto rounded-lg object-contain"
     />
   `,
 })
