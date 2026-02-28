@@ -13,12 +13,13 @@ import { ActivatedRoute } from "@angular/router";
 import { CardapioService } from "../../modules/cardapio/services/cardapio.service";
 import { Cardapio } from "../../modules/cardapio/types/cardapio";
 import { MoneyPipe } from "../../pipes/money.pipe";
+import { PatrocinadoresComponent } from "../../components/patrocinadores/patrocinadores.component";
 
 const CARDAPIO_KEY = makeStateKey<Cardapio>("cardapio");
 
 @Component({
   selector: "pagina-cardapio",
-  imports: [MoneyPipe],
+  imports: [MoneyPipe, PatrocinadoresComponent],
   templateUrl: "./cardapio.component.html",
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -110,6 +111,7 @@ export class CardapioComponent {
       const cardapioData = this._transferState.get(CARDAPIO_KEY, null);
       if (cardapioData) {
         this.cardapio.set(cardapioData);
+        console.log(cardapioData);
       }
     }
   }

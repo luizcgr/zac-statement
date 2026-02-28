@@ -64,11 +64,8 @@
       }
     </div>
     @if (extrato.evento.patrocinadores.length > 0) {
-      <div class="mt-10 text-xl">Patrocinadores:</div>
-      <div class="mt-5 grid grid-cols-1 gap-3 xl:grid-cols-3">
-        @for (patrocinador of extrato.evento.patrocinadores; track $index) {
-          <imagem-patrocinador [patrocinador]="patrocinador" />
-        }
+      <div class="mt-10">
+        <patrocinadores [patrocinadores]="extrato.evento.patrocinadores" />
       </div>
     }
     <div class="mb-20"></div>

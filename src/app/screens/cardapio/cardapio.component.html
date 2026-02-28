@@ -90,6 +90,12 @@
       }
     </div>
 
+    @if (cardapio()!.patrocinadores.length > 0) {
+      <div class="mt-10">
+        <patrocinadores [patrocinadores]="cardapio()!.patrocinadores" />
+      </div>
+    }
+
     <!-- Spacer to prevent content from being hidden behind fixed total -->
     @if (valorTotal() > 0) {
       <div class="h-32"></div>
@@ -100,6 +106,8 @@
     </div>
   }
 </div>
+
+<div class="mb-20"></div>
 
 <!-- Fixed Total Value Display -->
 @if (cardapio() && valorTotal() > 0) {
