@@ -21,7 +21,7 @@ export class ImagemPatrocinadorComponent {
 
   abrirLink() {
     if (this.patrocinador.link) {
-      window.open(this.patrocinador.link, "_blank");
+      window.open(this.patrocinador.link);
     }
   }
 }
