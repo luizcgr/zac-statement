@@ -1,27 +1,33 @@
-import { Component, Input } from "@angular/core";
-import { Router, RouterModule } from "@angular/router";
+import { Component, input } from "@angular/core";
+import { NgTemplateOutlet } from "@angular/common";
 import { Patrocinador } from "../../modules/extrato/types/patrocinador";
 
 @Component({
   selector: "imagem-patrocinador",
-  imports: [RouterModule],
+  imports: [NgTemplateOutlet],
   template: `
-    <img
-      [src]="patrocinador.imagem"
-      (click)="abrirLink()"
-      alt="Imagem do patrocinador"
-      class="h-auto rounded-lg object-contain"
-    />
+    @if (patrocinador().link) {
+      <a
+        [href]="patrocinador().link"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="block"
+      >
+        <ng-container *ngTemplateOutlet="imagemTemplate" />
+      </a>
+    } @else {
+      <ng-container *ngTemplateOutlet="imagemTemplate" />
+    }
+
+    <ng-template #imagemTemplate>
+      <img
+        [src]="patrocinador().imagem"
+        alt="Imagem do patrocinador"
+        class="h-auto rounded-lg object-contain"
+      />
+    </ng-template>
   `,
 })
 export class ImagemPatrocinadorComponent {
-  @Input({ required: true }) patrocinador!: Patrocinador;
-
-  constructor(private readonly _router: Router) {}
-
-  abrirLink() {
-    if (this.patrocinador.link) {
-      window.open(this.patrocinador.link);
-    }
-  }
+  patrocinador = input.required<Patrocinador>();
 }
