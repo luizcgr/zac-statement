@@ -9,7 +9,7 @@ import { ImagemPatrocinadorComponent } from "../imagem-patrocinador/imagem-patro
     @if (patrocinadores.length > 0) {
       <div class="cursor-pointer text-center">
         <div class="text-xl">Patrocinadores:</div>
-        <div class="mt-5 grid grid-cols-1 gap-3 xl:grid-cols-3">
+        <div class="mt-5 grid max-w-2xl grid-cols-1 gap-3 xl:grid-cols-3">
           @for (patrocinador of patrocinadores; track $index) {
             <imagem-patrocinador [patrocinador]="patrocinador" />
           }
