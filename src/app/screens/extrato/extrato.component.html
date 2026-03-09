@@ -4,10 +4,12 @@
 <div class="flex w-full flex-col items-center">
   @if (extrato) {
     <div class="text-center text-[26px] font-bold text-[#09bbf7]">
-      Recargas, Compras e Transferências
+      {{ extrato.evento.nome }}
     </div>
-    <div class="-mt-0.5 mb-3 text-center">
-      <div class="text-[#09bbf7]">{{ extrato.evento.nome }}</div>
+    <div class="-mt-0.5 mb-6 text-center">
+      <div class="text-[18px] text-[#09bbf7]">
+        Recargas, Compras e Transferências
+      </div>
     </div>
 
     <div class="mb-2 text-center">
