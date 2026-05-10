@@ -25,21 +25,21 @@
     <div class="w-full max-w-2xl space-y-6">
       @for (item of itensFiltrados(); track item.terminal) {
         <div
-          [class.border-[#0788c7]]="terminalTemProdutosSelecionados(item.produtos)"
-          [class.border-[#09bbf7]]="!terminalTemProdutosSelecionados(item.produtos)"
-          [class.bg-[#0788c7]/20]="terminalTemProdutosSelecionados(item.produtos)"
-          [class.bg-gray-900/50]="!terminalTemProdutosSelecionados(item.produtos)"
+          [class.border-[#0788c7]]="terminalTemProdutosSelecionados(item.terminal, item.produtos)"
+          [class.border-[#09bbf7]]="!terminalTemProdutosSelecionados(item.terminal, item.produtos)"
+          [class.bg-[#0788c7]/20]="terminalTemProdutosSelecionados(item.terminal, item.produtos)"
+          [class.bg-gray-900/50]="!terminalTemProdutosSelecionados(item.terminal, item.produtos)"
           class="overflow-hidden rounded-lg border-2"
         >
           <!-- Terminal Header -->
           <div
-            [class.bg-[#0788c7]]="terminalTemProdutosSelecionados(item.produtos)"
-            [class.bg-[#09bbf7]]="!terminalTemProdutosSelecionados(item.produtos)"
+            [class.bg-[#0788c7]]="terminalTemProdutosSelecionados(item.terminal, item.produtos)"
+            [class.bg-[#09bbf7]]="!terminalTemProdutosSelecionados(item.terminal, item.produtos)"
             class="px-4 py-3"
           >
             <div class="text-[20px] font-bold text-white">
               {{ item.terminal }}
-              @if (terminalTemProdutosSelecionados(item.produtos)) {
+              @if (terminalTemProdutosSelecionados(item.terminal, item.produtos)) {
                 <span class="ml-2 text-[16px]">✓</span>
               }
             </div>
@@ -60,9 +60,9 @@
                 <div class="flex items-center gap-3">
                   <!-- Remove Button -->
                   <button
-                    (click)="removerProduto(produto.nome)"
-                    [class.opacity-50]="obterQuantidade(produto.nome) === 0"
-                    [disabled]="obterQuantidade(produto.nome) === 0"
+                    (click)="removerProduto(item.terminal, produto.nome)"
+                    [class.opacity-50]="obterQuantidade(item.terminal, produto.nome) === 0"
+                    [disabled]="obterQuantidade(item.terminal, produto.nome) === 0"
                     class="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-rose-400 to-red-600 text-[24px] leading-none font-bold text-white hover:from-rose-500 hover:to-red-700 disabled:cursor-not-allowed disabled:hover:from-rose-400 disabled:hover:to-red-600 shadow-lg touch-manipulation select-none transition-all"
                   >
                     -
@@ -72,12 +72,12 @@
                   <div
                     class="w-12 text-center text-[20px] font-bold text-white select-none"
                   >
-                    {{ obterQuantidade(produto.nome) }}
+                    {{ obterQuantidade(item.terminal, produto.nome) }}
                   </div>
 
                   <!-- Add Button -->
                   <button
-                    (click)="adicionarProduto(produto.nome)"
+                    (click)="adicionarProduto(item.terminal, produto.nome)"
                     class="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-emerald-400 to-green-600 text-[24px] leading-none font-bold text-white hover:from-emerald-500 hover:to-green-700 shadow-lg touch-manipulation select-none transition-all"
                   >
                     +

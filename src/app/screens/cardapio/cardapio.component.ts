@@ -71,6 +71,10 @@ export class CardapioComponent {
   mostrarTotal = signal<boolean>(false);
   animandoSaida = signal<boolean>(false);
 
+  private criarChaveProduto(terminal: string, nomeProduto: string): string {
+    return `${terminal}::${nomeProduto}`;
+  }
+
   itensFiltrados = computed(() => {
     const cardapioData = this.cardapio();
     const filtroTexto = this.filtro().toLowerCase().trim();
@@ -98,7 +102,8 @@ export class CardapioComponent {
     let total = 0;
     cardapioData.itens.forEach((item) => {
       item.produtos.forEach((produto) => {
-        const quantidade = qtds.get(produto.nome) || 0;
+        const chaveProduto = this.criarChaveProduto(item.terminal, produto.nome);
+        const quantidade = qtds.get(chaveProduto) || 0;
         total += produto.valor * quantidade;
       });
     });
@@ -106,31 +111,38 @@ export class CardapioComponent {
     return total;
   });
 
-  adicionarProduto(nomeProduto: string): void {
+  adicionarProduto(terminal: string, nomeProduto: string): void {
     const qtds = new Map(this.quantidades());
-    qtds.set(nomeProduto, (qtds.get(nomeProduto) || 0) + 1);
+    const chaveProduto = this.criarChaveProduto(terminal, nomeProduto);
+    qtds.set(chaveProduto, (qtds.get(chaveProduto) || 0) + 1);
     this.quantidades.set(qtds);
   }
 
-  removerProduto(nomeProduto: string): void {
+  removerProduto(terminal: string, nomeProduto: string): void {
     const qtds = new Map(this.quantidades());
-    const quantidadeAtual = qtds.get(nomeProduto) || 0;
+    const chaveProduto = this.criarChaveProduto(terminal, nomeProduto);
+    const quantidadeAtual = qtds.get(chaveProduto) || 0;
 
     if (quantidadeAtual > 0) {
-      qtds.set(nomeProduto, quantidadeAtual - 1);
+      qtds.set(chaveProduto, quantidadeAtual - 1);
       this.quantidades.set(qtds);
     }
   }
 
-  obterQuantidade(nomeProduto: string): number {
-    return this.quantidades().get(nomeProduto) || 0;
+  obterQuantidade(terminal: string, nomeProduto: string): number {
+    const chaveProduto = this.criarChaveProduto(terminal, nomeProduto);
+    return this.quantidades().get(chaveProduto) || 0;
   }
 
   terminalTemProdutosSelecionados(
+    terminal: string,
     produtos: { nome: string; valor: number }[],
   ): boolean {
     const qtds = this.quantidades();
-    return produtos.some((produto) => (qtds.get(produto.nome) || 0) > 0);
+    return produtos.some(
+      (produto) =>
+        (qtds.get(this.criarChaveProduto(terminal, produto.nome)) || 0) > 0,
+    );
   }
 
   constructor(
