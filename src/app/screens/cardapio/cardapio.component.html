@@ -33,8 +33,13 @@
         >
           <!-- Terminal Header -->
           <div
-            [class.bg-[#0788c7]/60]="terminalTemProdutosSelecionados(item.terminal, item.produtos)"
-            [class.bg-[#09bbf7]/45]="!terminalTemProdutosSelecionados(item.terminal, item.produtos)"
+            [class.bg-gradient-to-r]="true"
+            [class.from-[#0788c7]/80]="terminalTemProdutosSelecionados(item.terminal, item.produtos)"
+            [class.via-[#09bbf7]/65]="terminalTemProdutosSelecionados(item.terminal, item.produtos)"
+            [class.to-[#0788c7]/75]="terminalTemProdutosSelecionados(item.terminal, item.produtos)"
+            [class.from-[#09bbf7]/55]="!terminalTemProdutosSelecionados(item.terminal, item.produtos)"
+            [class.via-[#4fcdf9]/45]="!terminalTemProdutosSelecionados(item.terminal, item.produtos)"
+            [class.to-[#0788c7]/50]="!terminalTemProdutosSelecionados(item.terminal, item.produtos)"
             class="border-b border-white/20 px-4 py-3 backdrop-blur-md shadow-[inset_0_1px_0_rgba(255,255,255,0.25)]"
           >
             <div class="text-[20px] font-bold text-white">
