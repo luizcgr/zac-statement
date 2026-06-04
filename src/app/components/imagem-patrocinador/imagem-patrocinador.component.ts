@@ -11,20 +11,24 @@ import { Patrocinador } from "../../modules/extrato/types/patrocinador";
         [href]="patrocinador().link"
         target="_blank"
         rel="noopener noreferrer"
-        class="block"
+        class="block w-36 sm:w-40"
       >
         <ng-container *ngTemplateOutlet="imagemTemplate" />
       </a>
     } @else {
-      <ng-container *ngTemplateOutlet="imagemTemplate" />
+      <div class="w-36 sm:w-40">
+        <ng-container *ngTemplateOutlet="imagemTemplate" />
+      </div>
     }
 
     <ng-template #imagemTemplate>
-      <img
-        [src]="patrocinador().imagem"
-        alt="Imagem do patrocinador"
-        class="h-auto rounded-lg object-contain"
-      />
+      <div class="aspect-[3/2] w-full">
+        <img
+          [src]="patrocinador().imagem"
+          alt="Imagem do patrocinador"
+          class="h-full w-full object-contain"
+        />
+      </div>
     </ng-template>
   `,
 })
