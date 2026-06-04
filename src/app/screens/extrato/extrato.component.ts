@@ -13,6 +13,7 @@ import {
   TransferState,
 } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
+import { PedidosComponent } from "../../components/pedidos/pedidos.component";
 import { PatrocinadoresComponent } from "../../components/patrocinadores/patrocinadores.component";
 import { ExtratoService } from "../../modules/extrato/services/extrato.service";
 import { Extrato } from "../../modules/extrato/types/extrato";
@@ -22,7 +23,7 @@ const EXTRATO_KEY = makeStateKey<Extrato>("extrato");
 
 @Component({
   selector: "extrato",
-  imports: [CommonModule, MoneyPipe, DatePipe, PatrocinadoresComponent],
+  imports: [CommonModule, MoneyPipe, DatePipe, PedidosComponent, PatrocinadoresComponent],
   templateUrl: `./extrato.component.html`,
 })
 export class ExtratoComponent implements OnInit {
@@ -33,7 +34,7 @@ export class ExtratoComponent implements OnInit {
     private readonly _transferState: TransferState,
     @Inject(PLATFORM_ID) private readonly _platformId: object,
     private readonly _activatedRoute: ActivatedRoute,
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     if (isPlatformServer(this._platformId)) {
