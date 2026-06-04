@@ -3,9 +3,9 @@ import { ChangeDetectionStrategy, Component, computed, input } from "@angular/co
 import { Pedido } from "../../modules/extrato/types/pedido";
 
 @Component({
-    selector: "pedidos",
-    imports: [DatePipe],
-    template: `
+  selector: "pedidos",
+  imports: [DatePipe],
+  template: `
       @if (pedidosVisiveis().length > 0) {
         <div class="mx-4 mb-6 w-[calc(100%-2rem)] max-w-md">
         <div class="mb-3 flex items-center gap-3 text-[#09bbf7]">
@@ -50,6 +50,8 @@ import { Pedido } from "../../modules/extrato/types/pedido";
                   [class]="
                     rotuloStatus(pedido.status) === 'Pronto'
                       ? 'shrink-0 rounded-full border border-emerald-400/30 bg-emerald-400/15 px-3 py-1 text-[12px] font-semibold text-emerald-300'
+                      : rotuloStatus(pedido.status) === 'Em preparo'
+                        ? 'shrink-0 rounded-full border border-amber-400/35 bg-amber-400/15 px-3 py-1 text-[12px] font-semibold text-amber-300'
                       : 'shrink-0 rounded-full border border-[#09bbf7]/30 bg-[#09bbf7]/15 px-3 py-1 text-[12px] font-semibold text-[#09bbf7]'
                   "
                 >
@@ -82,39 +84,39 @@ import { Pedido } from "../../modules/extrato/types/pedido";
       </div>
     }
   `,
-    changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PedidosComponent {
-    pedidos = input<Pedido[]>([]);
+  pedidos = input<Pedido[]>([]);
 
-    private pedidoVisivel(status: Pedido["status"]): boolean {
-        const statusNormalizado = String(status).toLowerCase().trim();
+  private pedidoVisivel(status: Pedido["status"]): boolean {
+    const statusNormalizado = String(status).toLowerCase().trim();
 
-        return (
-            statusNormalizado !== "cancelado" &&
-            statusNormalizado !== "entregue"
-        );
-    }
-
-    rotuloStatus(status: Pedido["status"]): string {
-        const statusNormalizado = String(status).toLowerCase().trim();
-
-        if (statusNormalizado === "aguardando") {
-            return "Aguardando";
-        }
-
-        if (statusNormalizado === "preparando" || statusNormalizado === "em preparo") {
-            return "Em preparo";
-        }
-
-        if (statusNormalizado === "pronto") {
-            return "Pronto";
-        }
-
-        return "Em andamento";
-    }
-
-    pedidosVisiveis = computed(() =>
-        this.pedidos().filter((pedido) => this.pedidoVisivel(pedido.status)),
+    return (
+      statusNormalizado !== "cancelado" &&
+      statusNormalizado !== "entregue"
     );
+  }
+
+  rotuloStatus(status: Pedido["status"]): string {
+    const statusNormalizado = String(status).toLowerCase().trim();
+
+    if (statusNormalizado === "aguardando") {
+      return "Aguardando";
+    }
+
+    if (statusNormalizado === "preparando" || statusNormalizado === "em preparo") {
+      return "Em preparo";
+    }
+
+    if (statusNormalizado === "pronto") {
+      return "Pronto";
+    }
+
+    return "Em andamento";
+  }
+
+  pedidosVisiveis = computed(() =>
+    this.pedidos().filter((pedido) => this.pedidoVisivel(pedido.status)),
+  );
 }
