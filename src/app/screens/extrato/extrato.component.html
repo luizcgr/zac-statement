@@ -20,25 +20,39 @@
         <button
           type="button"
           (click)="recarregarExtrato()"
-          class="group inline-flex h-11 w-11 items-center justify-center rounded-full border border-[#09bbf7]/40 bg-[#09bbf7]/12 text-[#09bbf7] shadow-[0_6px_20px_rgba(9,187,247,0.25)] transition-all hover:-translate-y-0.5 hover:border-[#09bbf7]/70 hover:bg-[#09bbf7]/25 hover:text-white focus:outline-none focus:ring-2 focus:ring-[#09bbf7]"
+          [disabled]="recarregandoExtrato"
+          [attr.aria-busy]="recarregandoExtrato"
+          class="group inline-flex h-11 w-11 items-center justify-center rounded-full border border-[#09bbf7]/40 bg-[#09bbf7]/12 text-[#09bbf7] shadow-[0_6px_20px_rgba(9,187,247,0.25)] transition-all hover:-translate-y-0.5 hover:border-[#09bbf7]/70 hover:bg-[#09bbf7]/25 hover:text-white focus:outline-none focus:ring-2 focus:ring-[#09bbf7] disabled:cursor-not-allowed disabled:border-[#09bbf7]/30 disabled:bg-[#09bbf7]/10 disabled:text-[#79d3f3] disabled:hover:translate-y-0 disabled:hover:bg-[#09bbf7]/10"
           aria-label="Recarregar extrato"
           title="Recarregar extrato"
         >
-          <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" class="h-5 w-5">
-            <path
-              d="M20 12A8 8 0 1 1 17.66 6.34"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-            />
-            <path
-              d="M20 4V9H15"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            />
-          </svg>
+          @if (recarregandoExtrato) {
+            <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" class="h-5 w-5 animate-spin">
+              <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2" class="opacity-30" />
+              <path
+                d="M12 3a9 9 0 0 1 9 9"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+              />
+            </svg>
+          } @else {
+            <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" class="h-5 w-5">
+              <path
+                d="M20 12A8 8 0 1 1 17.66 6.34"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+              />
+              <path
+                d="M20 4V9H15"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+          }
         </button>
       </div>
       <div class="-mt-2 text-[#09bbf7]">Saldo Atual</div>
