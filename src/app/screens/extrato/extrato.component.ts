@@ -29,6 +29,23 @@ const EXTRATO_KEY = makeStateKey<Extrato>("extrato");
 export class ExtratoComponent implements OnInit {
   extrato: Extrato | null = null;
 
+  private obterCodigoCartao(): string | null {
+    return this._activatedRoute.snapshot.paramMap.get("codigo");
+  }
+
+  recarregarExtrato(): void {
+    const codigo = this.obterCodigoCartao();
+
+    if (!codigo) {
+      return;
+    }
+
+    this._extratoService.consultar(codigo).subscribe((data) => {
+      this.extrato = data;
+      this._transferState.set(EXTRATO_KEY, data);
+    });
+  }
+
   constructor(
     private readonly _extratoService: ExtratoService,
     private readonly _transferState: TransferState,
@@ -38,11 +55,7 @@ export class ExtratoComponent implements OnInit {
 
   ngOnInit(): void {
     if (isPlatformServer(this._platformId)) {
-      const codigo = this._activatedRoute.snapshot.paramMap.get("codigo");
-      this._extratoService.consultar(codigo!).subscribe((data) => {
-        this.extrato = data;
-        this._transferState.set(EXTRATO_KEY, data);
-      });
+      this.recarregarExtrato();
     }
     if (isPlatformBrowser(this._platformId)) {
       this.extrato = this._transferState.get(EXTRATO_KEY, null);
