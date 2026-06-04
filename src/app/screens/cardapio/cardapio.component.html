@@ -18,7 +18,7 @@
         placeholder="Buscar produtos..."
         [value]="filtro()"
         (input)="filtro.set($any($event.target).value)"
-        class="w-full rounded-lg border-2 border-[#09bbf7] bg-gray-900/50 px-4 py-3 text-[18px] text-white placeholder-gray-400 focus:ring-2 focus:ring-[#09bbf7] focus:outline-none"
+        class="w-full rounded-xl border border-[#09bbf7]/45 bg-[#0b1f2d]/45 px-4 py-3 text-[18px] text-white placeholder-[#b2deef] backdrop-blur-md shadow-[0_10px_24px_rgba(0,0,0,0.22),inset_0_1px_0_rgba(255,255,255,0.12)] transition-all focus:border-[#09bbf7]/80 focus:ring-2 focus:ring-[#09bbf7]/45 focus:outline-none"
       />
     </div>
 
@@ -27,15 +27,15 @@
         <div
           [class.border-[#0788c7]]="terminalTemProdutosSelecionados(item.terminal, item.produtos)"
           [class.border-[#09bbf7]]="!terminalTemProdutosSelecionados(item.terminal, item.produtos)"
-          [class.bg-[#0788c7]/20]="terminalTemProdutosSelecionados(item.terminal, item.produtos)"
-          [class.bg-gray-900/50]="!terminalTemProdutosSelecionados(item.terminal, item.produtos)"
-          class="overflow-hidden rounded-lg border-2"
+          [class.bg-[#0788c7]/16]="terminalTemProdutosSelecionados(item.terminal, item.produtos)"
+          [class.bg-[#0b1f2d]/45]="!terminalTemProdutosSelecionados(item.terminal, item.produtos)"
+          class="overflow-hidden rounded-lg border-2 backdrop-blur-md shadow-[0_10px_30px_rgba(0,0,0,0.22),inset_0_1px_0_rgba(255,255,255,0.08)]"
         >
           <!-- Terminal Header -->
           <div
-            [class.bg-[#0788c7]]="terminalTemProdutosSelecionados(item.terminal, item.produtos)"
-            [class.bg-[#09bbf7]]="!terminalTemProdutosSelecionados(item.terminal, item.produtos)"
-            class="px-4 py-3"
+            [class.bg-[#0788c7]/60]="terminalTemProdutosSelecionados(item.terminal, item.produtos)"
+            [class.bg-[#09bbf7]/45]="!terminalTemProdutosSelecionados(item.terminal, item.produtos)"
+            class="border-b border-white/20 px-4 py-3 backdrop-blur-md shadow-[inset_0_1px_0_rgba(255,255,255,0.25)]"
           >
             <div class="text-[20px] font-bold text-white">
               {{ item.terminal }}
@@ -46,9 +46,9 @@
           </div>
 
           <!-- Products List -->
-          <div class="divide-y divide-gray-700/50">
+          <div class="divide-y divide-white/10">
             @for (produto of item.produtos; track $index) {
-              <div class="flex items-center justify-between gap-4 p-4">
+              <div class="flex items-center justify-between gap-4 p-4 transition-colors hover:bg-white/5">
                 <div class="flex-1">
                   <div class="text-[18px] font-medium text-white">
                     {{ produto.nome }}
