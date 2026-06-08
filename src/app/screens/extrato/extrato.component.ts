@@ -8,6 +8,7 @@ import {
   Component,
   Inject,
   makeStateKey,
+  OnDestroy,
   OnInit,
   PLATFORM_ID,
   TransferState,
@@ -30,6 +31,46 @@ const EXTRATO_KEY = makeStateKey<Extrato>("extrato");
 export class ExtratoComponent implements OnInit {
   extrato: Extrato | null = null;
   recarregandoExtrato = false;
+  private readonly _intervaloAtualizacaoMs = 10000;
+  private _timeoutAtualizacao: ReturnType<typeof setTimeout> | null = null;
+
+  private pedidoPendente(status: string): boolean {
+    const statusNormalizado = String(status).toLowerCase().trim();
+
+    return statusNormalizado !== "cancelado" && statusNormalizado !== "entregue";
+  }
+
+  private temPedidosPendentes(extrato: Extrato | null): boolean {
+    if (!extrato) {
+      return false;
+    }
+
+    return extrato.pedidos.some((pedido) => this.pedidoPendente(pedido.status));
+  }
+
+  private pararAtualizacaoAutomatica(): void {
+    if (this._timeoutAtualizacao !== null) {
+      clearTimeout(this._timeoutAtualizacao);
+      this._timeoutAtualizacao = null;
+    }
+  }
+
+  private agendarProximaAtualizacao(): void {
+    if (!isPlatformBrowser(this._platformId)) {
+      return;
+    }
+
+    this.pararAtualizacaoAutomatica();
+
+    if (!this.temPedidosPendentes(this.extrato)) {
+      return;
+    }
+
+    this._timeoutAtualizacao = setTimeout(() => {
+      this._timeoutAtualizacao = null;
+      this.recarregarExtrato();
+    }, this._intervaloAtualizacaoMs);
+  }
 
   private obterCodigoCartao(): string | null {
     return this._activatedRoute.snapshot.paramMap.get("codigo");
@@ -46,10 +87,12 @@ export class ExtratoComponent implements OnInit {
       return;
     }
 
+    this.pararAtualizacaoAutomatica();
     this.recarregandoExtrato = true;
     this._extratoService.consultar(codigo)
       .pipe(finalize(() => {
         this.recarregandoExtrato = false;
+        this.agendarProximaAtualizacao();
       }))
       .subscribe((data) => {
         this.extrato = data;
@@ -70,6 +113,11 @@ export class ExtratoComponent implements OnInit {
     }
     if (isPlatformBrowser(this._platformId)) {
       this.extrato = this._transferState.get(EXTRATO_KEY, null);
+      this.agendarProximaAtualizacao();
     }
+  }
+
+  ngOnDestroy(): void {
+    this.pararAtualizacaoAutomatica();
   }
 }
