@@ -1,5 +1,6 @@
 import { Evento } from './evento';
 import { ItemExtrato } from './item-extrato';
+import { Pedido } from './pedido';
 
 export type Extrato = {
   cartaoId: number;
@@ -16,4 +17,5 @@ export type Extrato = {
   historico: ItemExtrato[];
   tag?: string;
   recargaUnica: boolean;
+  pedidos: Pedido[];
 };
