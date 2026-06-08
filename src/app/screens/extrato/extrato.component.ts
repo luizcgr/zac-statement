@@ -31,7 +31,7 @@ const EXTRATO_KEY = makeStateKey<Extrato>("extrato");
 export class ExtratoComponent implements OnInit {
   extrato: Extrato | null = null;
   recarregandoExtrato = false;
-  private readonly _intervaloAtualizacaoMs = 10000;
+  private readonly _intervaloAtualizacaoMs = 60000;
   private _timeoutAtualizacao: ReturnType<typeof setTimeout> | null = null;
 
   private pedidoPendente(status: string): boolean {
