@@ -14,9 +14,9 @@ export class ExtratoService {
   ) { }
 
   consultar(cartao: string): Observable<Extrato | null> {
-    const url = isPlatformBrowser(this._platformId)
-      ? `/bff/cartoes/${cartao}/extrato`
-      : `v1/cartoes/${cartao}/extrato-publico`;
+    const url =
+      `/bff/cartoes/${cartao}/extrato`
+      ;
 
     return this._http.get<Extrato>(url).pipe(
       catchError((error) => {
