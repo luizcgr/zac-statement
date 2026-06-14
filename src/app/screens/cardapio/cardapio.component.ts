@@ -173,9 +173,14 @@ export class CardapioComponent {
     if (isPlatformServer(this._platformId)) {
       const chave = this._activatedRoute.snapshot.paramMap.get("chave");
       if (chave) {
-        this._cardapioService.consultar(chave).subscribe((cardapio) => {
-          this.cardapio.set(cardapio);
-          this._transferState.set(CARDAPIO_KEY, cardapio);
+        this._cardapioService.consultar(chave).subscribe({
+          next: (cardapio) => {
+            this.cardapio.set(cardapio);
+            this._transferState.set(CARDAPIO_KEY, cardapio);
+          },
+          error: (err) => {
+            console.warn("Erro ao consultar cardápio: ", err.message);
+          }
         });
       }
     }
