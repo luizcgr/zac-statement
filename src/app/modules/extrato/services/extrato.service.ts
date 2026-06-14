@@ -1,16 +1,24 @@
+import { isPlatformBrowser } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { catchError, map, Observable, of, pipe, tap, throwError } from 'rxjs';
+import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
+import { catchError, Observable, of, throwError } from 'rxjs';
 import { Extrato } from '../types/extrato';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ExtratoService {
-  constructor(private readonly _http: HttpClient) { }
+  constructor(
+    private readonly _http: HttpClient,
+    @Inject(PLATFORM_ID) private readonly _platformId: object,
+  ) { }
 
   consultar(cartao: string): Observable<Extrato | null> {
-    return this._http.get<Extrato>(`v1/cartoes/${cartao}/extrato-publico`).pipe(
+    const url = isPlatformBrowser(this._platformId)
+      ? `/bff/cartoes/${cartao}/extrato`
+      : `v1/cartoes/${cartao}/extrato-publico`;
+
+    return this._http.get<Extrato>(url).pipe(
       catchError((error) => {
         if (error.status === 404) {
           return of(null);

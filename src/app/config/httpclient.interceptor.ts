@@ -6,9 +6,13 @@ import { environment } from '../../environments/environment';
 
 @Injectable()
 export class HttpClientInterceptor implements HttpInterceptor {
-  constructor(private _tokenService: TokenService) {}
+  constructor(private _tokenService: TokenService) { }
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+    if (req.url.startsWith('/bff/')) {
+      return next.handle(req);
+    }
+
     const requestUrl = `${environment.apiUrl}/${req.url}`;
     if (req.url === 'v1/login/refresh-token' || req.url === 'v1/login/credenciais') {
       req = req.clone({
