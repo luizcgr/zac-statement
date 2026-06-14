@@ -2,15 +2,15 @@ import { NextFunction, Request, Response, Router } from 'express';
 import { environment } from '../environments/environment';
 import { obterToken } from './auth';
 
-export const extratoRouter = Router();
+export const cardapioRouter = Router();
 
-extratoRouter.get('/cartoes/:codigo/extrato', (req: Request, res: Response, next: NextFunction) => {
+cardapioRouter.get('/cardapio/:chave', (req: Request, res: Response, next: NextFunction) => {
     (async () => {
-        const codigo = encodeURIComponent(req.params['codigo']);
+        const chave = encodeURIComponent(req.params['chave']);
         const token = await obterToken();
 
         const resposta = await fetch(
-            `${environment.apiUrl}/v1/cartoes/${codigo}/extrato-publico`,
+            `${environment.apiUrl}/v1/cardapio/${chave}/publico`,
             {
                 headers: {
                     Authorization: `Bearer ${token}`,

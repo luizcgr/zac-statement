@@ -5,9 +5,9 @@ import { Cardapio } from "../types/cardapio";
 
 @Injectable({ providedIn: "root" })
 export class CardapioService {
-  constructor(private readonly _http: HttpClient) {}
+  constructor(private readonly _http: HttpClient) { }
 
   consultar(chave: string): Observable<Cardapio> {
-    return this._http.get<Cardapio>(`v1/cardapio/${chave}/publico`);
+    return this._http.get<Cardapio>(`/bff/cardapio/${chave}`);
   }
 }
