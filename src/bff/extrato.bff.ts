@@ -1,9 +1,20 @@
-import { Router } from 'express';
+import { NextFunction, Request, Response, Router } from 'express';
 import { environment } from '../environments/environment';
 
 interface TokenCache {
     value: string;
     expiresAt: number;
+}
+
+const ORIGEM_LOCALHOST = /^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?(\/.*)?$/;
+
+function validarOrigemLocalhost(req: Request, res: Response, next: NextFunction): void {
+    const origem = req.headers['origin'] ?? req.headers['referer'] ?? '';
+    if (!ORIGEM_LOCALHOST.test(String(origem))) {
+        res.status(400).end();
+        return;
+    }
+    next();
 }
 
 let _tokenCache: TokenCache | null = null;
@@ -37,6 +48,8 @@ async function obterToken(): Promise<string> {
 }
 
 export const extratoRouter = Router();
+
+extratoRouter.use(validarOrigemLocalhost);
 
 extratoRouter.get('/cartoes/:codigo/extrato', async (req, res) => {
     try {
