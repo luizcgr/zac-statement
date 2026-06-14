@@ -113,7 +113,11 @@ export class ExtratoComponent implements OnInit {
     }
     if (isPlatformBrowser(this._platformId)) {
       this.extrato = this._transferState.get(EXTRATO_KEY, null);
-      this.agendarProximaAtualizacao();
+      if (this.extrato) {
+        this.agendarProximaAtualizacao();
+      } else {
+        this.recarregarExtrato();
+      }
     }
   }
 
