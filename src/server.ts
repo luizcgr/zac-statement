@@ -6,7 +6,6 @@ import {
 } from '@angular/ssr/node';
 import express from 'express';
 import { join } from 'node:path';
-import { cardapioRouter } from './bff/cardapio.bff';
 import { extratoRouter } from './bff/extrato.bff';
 
 const browserDistFolder = join(import.meta.dirname, '../browser');
@@ -26,8 +25,7 @@ const angularApp = new AngularNodeAppEngine();
  * ```
  */
 
-app.use('/bff', cardapioRouter);
-app.use('/bff', extratoRouter);
+app.use('/data', extratoRouter);
 
 /**
  * Serve static files from /browser

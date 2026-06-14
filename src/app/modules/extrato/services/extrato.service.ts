@@ -15,7 +15,7 @@ export class ExtratoService {
 
   consultar(cartao: string): Observable<Extrato | null> {
     const url =
-      `/bff/cartoes/${cartao}/extrato`
+      `/data/cartoes/${cartao}/extrato`
       ;
 
     return this._http.get<Extrato>(url).pipe(

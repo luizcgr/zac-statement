@@ -9,7 +9,7 @@ export class HttpClientInterceptor implements HttpInterceptor {
   constructor(private _tokenService: TokenService) { }
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    if (req.url.startsWith('/bff/')) {
+    if (req.url.startsWith('/data/')) {
       return next.handle(req);
     }
 
