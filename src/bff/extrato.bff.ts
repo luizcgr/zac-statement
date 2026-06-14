@@ -1,4 +1,4 @@
-import { Router } from 'express';
+import { NextFunction, Request, Response, Router } from 'express';
 import { environment } from '../environments/environment';
 
 interface TokenCache {
@@ -38,8 +38,8 @@ async function obterToken(): Promise<string> {
 
 export const extratoRouter = Router();
 
-extratoRouter.get('/cartoes/:codigo/extrato', async (req, res) => {
-    try {
+extratoRouter.get('/cartoes/:codigo/extrato', (req: Request, res: Response, next: NextFunction) => {
+    (async () => {
         const codigo = encodeURIComponent(req.params['codigo']);
         const token = await obterToken();
 
@@ -64,7 +64,5 @@ extratoRouter.get('/cartoes/:codigo/extrato', async (req, res) => {
         }
 
         res.json(await resposta.json());
-    } catch {
-        res.status(500).end();
-    }
+    })().catch(next);
 });
