@@ -67,6 +67,15 @@ if (isMainModule(import.meta.url) || isPM2) {
 }
 
 /**
+ * Global error handler — logs error, requested URL and client IP.
+ */
+app.use((err: Error, req: express.Request, res: express.Response, _next: express.NextFunction) => {
+  const ip = req.headers['x-forwarded-for'] ?? req.ip;
+  console.error(`[ERRO] ${err.message} | URL: ${req.url} | IP: ${ip}`);
+  res.status(500).end();
+});
+
+/**
  * Request handler used by the Angular CLI (for dev-server and during build) or Firebase Cloud Functions.
  */
 export const reqHandler = createNodeRequestHandler(app);

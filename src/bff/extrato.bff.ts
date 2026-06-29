@@ -25,10 +25,16 @@ extratoRouter.get('/cartoes/:codigo/extrato', (req: Request, res: Response, next
         }
 
         if (!resposta.ok) {
+            const ip = req.headers['x-forwarded-for'] ?? req.ip;
+            console.error(`[ERRO] Status ${resposta.status} ao chamar API | URL: ${req.url} | IP: ${ip}`);
             res.status(resposta.status).end();
             return;
         }
 
         res.json(await resposta.json());
-    })().catch(next);
+    })().catch((err: Error) => {
+        const ip = req.headers['x-forwarded-for'] ?? req.ip;
+        console.error(`[ERRO] ${err.message} | URL: ${req.url} | IP: ${ip}`);
+        next(err);
+    });
 });
